@@ -1,0 +1,9 @@
+# Verificacion de reproducibilidad (clon limpio desde GitHub)
+$ git clone --branch ae7/proyecto-final https://github.com/Anghy2003/Semana8.git
+$ mvn clean test
+Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.836 s -- in edu.uees.reservas.api.ReservaControllerTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.023 s -- in edu.uees.reservas.domain.ReservaTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.209 s -- in edu.uees.reservas.ReservaApiIntegracionTest
+Tests run: 18, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.304 s -- in edu.uees.reservas.service.ReservaServiceTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.010 s -- in edu.uees.reservas.tarifa.CalculadoraTarifasTest
+Total: 44 pruebas, 0 fallas, BUILD SUCCESS
