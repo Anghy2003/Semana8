@@ -1,0 +1,16 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+Semana 8 Proyecto Base,edu.uees.reservas.service,ReservaService,0,81,0,6,0,17,0,10,0,7
+Semana 8 Proyecto Base,edu.uees.reservas.service,ReservaDuplicadaException,0,10,0,0,0,4,0,2,0,2
+Semana 8 Proyecto Base,edu.uees.reservas.service,ReservaNoEncontradaException,0,10,0,0,0,4,0,2,0,2
+Semana 8 Proyecto Base,edu.uees.reservas.tarifa,TarifaNormal,2,5,0,0,1,2,1,2,1,2
+Semana 8 Proyecto Base,edu.uees.reservas.tarifa,CalculadoraTarifas,0,30,0,0,0,9,0,3,0,3
+Semana 8 Proyecto Base,edu.uees.reservas.tarifa,TarifaEstudiante,0,11,0,0,0,3,0,3,0,3
+Semana 8 Proyecto Base,edu.uees.reservas.tarifa,TarifaVip,0,11,0,0,0,3,0,3,0,3
+Semana 8 Proyecto Base,edu.uees.reservas.api,CrearReservaRequest,0,9,0,0,0,1,0,1,0,1
+Semana 8 Proyecto Base,edu.uees.reservas.api,ManejadorErrores,0,77,0,0,0,17,0,8,0,8
+Semana 8 Proyecto Base,edu.uees.reservas.api,TotalResponse,0,12,0,0,0,1,0,1,0,1
+Semana 8 Proyecto Base,edu.uees.reservas.api,ReservaController,0,53,0,0,0,11,0,7,0,7
+Semana 8 Proyecto Base,edu.uees.reservas.repository,ReservaRepositoryMemoria,0,24,0,0,0,5,0,3,0,3
+Semana 8 Proyecto Base,edu.uees.reservas.domain,EstadoReserva,0,21,0,0,0,4,0,1,0,1
+Semana 8 Proyecto Base,edu.uees.reservas.domain,Reserva,0,43,0,6,0,14,0,9,0,6
+Semana 8 Proyecto Base,edu.uees.reservas,ReservasApplication,5,3,0,0,2,1,1,1,1,1
