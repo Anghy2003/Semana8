@@ -1,28 +1,64 @@
-# UEES UCOM0310 — Semana 8 — Proyecto base
+# Sistema de reservas de tutorías · API REST (Spring Boot)
 
-Proyecto base para las actividades de integración final.
+Proyecto integrador de Diseño de Software (UCOM0310), Semana 8.
+Autora: Andrea Illescas · Repositorio: https://github.com/Anghy2003/Semana8
+
+API REST con separación **Controller → Service → Domain** y un repositorio en
+memoria.
 
 ## Requisitos
 - Java 21
-- Maven
+- Maven 3.9+
 - Git
 
 ## Ejecutar pruebas
 ```bash
-mvn clean test
+mvn clean test          # 22 pruebas: servicio, capa HTTP, integración y dominio
 ```
+Reporte de cobertura: `target/site/jacoco/index.html` (97 % de instrucciones, 100 % de ramas).
 
-## Ejecutar aplicación
+## Ejecutar la aplicación
 ```bash
-mvn spring-boot:run
+mvn spring-boot:run     # http://localhost:8080
 ```
 
-## Endpoint inicial
-`GET http://localhost:8080/api/reservas/salud`
+## Endpoints
+| Método | Ruta | Respuesta |
+|---|---|---|
+| GET | `/api/reservas/salud` | 200 `API activa` |
+| GET | `/api/reservas/puede-cancelar?horas=N` | 200 `true` si N ≥ 2, si no `false`; 400 si N no es número |
+| POST | `/api/reservas` con `{"id":"R-001","tipo":"NORMAL"}` | 201 con la reserva; 400 si falta `id` o `tipo` |
+| GET | `/api/reservas/{id}` | 200 con la reserva; 404 si no existe |
 
-## Cobertura
-Después de `mvn clean test`, abrir:
-`target/site/jacoco/index.html`
+## Demostración repetible
+Con la aplicación corriendo:
+```powershell
+powershell -ExecutionPolicy Bypass -File docsuditoriauditoria-funcional.ps1   # 9 de 9 OK
+```
+
+## Limitaciones conocidas
+- Un POST con un id que ya existe **reemplaza** la reserva anterior y responde 201 (debería ser 409).
+- Un 400 por validación no indica qué campo falló.
+- `ReservaService.confirmar(id)` no tiene endpoint.
+- El repositorio es en memoria: los datos se pierden al reiniciar.
+
+## Problema conocido del entorno (Windows)
+En el equipo donde se desarrolló, después de `mvn test` algunas carpetas de
+`target/classes` quedan con el atributo de **solo lectura** y el siguiente
+`mvn clean` falla con `Failed to delete ...	arget\classes\...`. No es un
+defecto del código (ocurre también en otros proyectos del mismo equipo). Si
+pasa, borrar `target` y volver a ejecutar:
+```powershell
+Remove-Item -Recurse -Force target; mvn clean test
+```
+
+## Documentación
+| Archivo | Contenido |
+|---|---|
+| `docs/04_RETO_BUSQUEDA.md` | Búsqueda por id: 500 antes, 404 después |
+| `docs/05_REFLEXION.md` | Separación de responsabilidades |
+| `docs/02_AUDITORIA_FINAL_PLANTILLA.md` | Checklist de auditoría de la Actividad 3 |
+| `docs/auditoria/` | Evidencias de la auditoría: pruebas, JaCoCo antes/después, Git, capturas |
 
 ---
 
