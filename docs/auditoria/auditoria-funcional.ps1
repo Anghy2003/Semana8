@@ -22,7 +22,7 @@ Revisar "POST crear R-100 NORMAL"            201 @("-X", "POST", $B, "-H", "Cont
 Revisar "GET R-100 (recien creado)"          200 @("$B/R-100")
 Revisar "GET R-404 (inexistente)"            404 @("$B/R-404")
 Revisar "POST id vacio"                      400 @("-X", "POST", $B, "-H", "Content-Type: $json", "-d", '{\"id\":\"\",\"tipo\":\"NORMAL\"}')
-Revisar "POST id duplicado (limitacion)"     201 @("-X", "POST", $B, "-H", "Content-Type: $json", "-d", '{\"id\":\"R-100\",\"tipo\":\"VIP\"}')
+Revisar "POST id duplicado (409 desde Ae7)"   409 @("-X", "POST", $B, "-H", "Content-Type: $json", "-d", '{\"id\":\"R-100\",\"tipo\":\"VIP\"}')
 
 ""
 if ($fallas -eq 0) { "Resultado: 9 de 9 comprobaciones OK" } else { "Resultado: $fallas comprobaciones FALLARON" }
