@@ -13,9 +13,9 @@ memoria.
 
 ## Ejecutar pruebas
 ```bash
-mvn clean test          # 22 pruebas: servicio, capa HTTP, integración y dominio
+mvn clean test          # 44 pruebas: servicio, capa HTTP, integración, tarifas y dominio
 ```
-Reporte de cobertura: `target/site/jacoco/index.html` (97 % de instrucciones, 100 % de ramas).
+Reporte de cobertura: `target/site/jacoco/index.html` (98 % de instrucciones, 100 % de ramas).
 
 ## Ejecutar la aplicación
 ```bash
@@ -23,24 +23,33 @@ mvn spring-boot:run     # http://localhost:8080
 ```
 
 ## Endpoints
-| Método | Ruta | Respuesta |
-|---|---|---|
-| GET | `/api/reservas/salud` | 200 `API activa` |
-| GET | `/api/reservas/puede-cancelar?horas=N` | 200 `true` si N ≥ 2, si no `false`; 400 si N no es número |
-| POST | `/api/reservas` con `{"id":"R-001","tipo":"NORMAL"}` | 201 con la reserva; 400 si falta `id` o `tipo` |
-| GET | `/api/reservas/{id}` | 200 con la reserva; 404 si no existe |
+| Método | Ruta | Éxito | Errores |
+|---|---|---|---|
+| GET | `/api/reservas/salud` | 200 `API activa` | — |
+| GET | `/api/reservas/puede-cancelar?horas=N` | 200 `true` si N ≥ 2 | 400 si N no es número |
+| POST | `/api/reservas` con `{"id":"R-001","tipo":"NORMAL"}` | 201 con la reserva | 400 con el campo que falta; 409 si el id ya existe |
+| GET | `/api/reservas/{id}` | 200 con la reserva | 404 |
+| GET | `/api/reservas/{id}/total?base=N` | 200 `{id, base, total}` (VIP −15 %, ESTUDIANTE −10 %) | 400 si N < 0; 404 |
+| POST | `/api/reservas/{id}/confirmar` | 200 con estado CONFIRMADA | 404 |
 
-## Demostración repetible
+## Demostración
 Con la aplicación corriendo:
 ```powershell
-powershell -ExecutionPolicy Bypass -File docsuditoriauditoria-funcional.ps1   # 9 de 9 OK
+powershell -ExecutionPolicy Bypass -File docse7\demo.ps1                    # demo de la defensa (10 pasos)
+powershell -ExecutionPolicy Bypass -File docsuditoriauditoria-funcional.ps1  # 9 de 9 OK
 ```
 
+## Diseño
+Controller → Service → Domain, con el cálculo de tarifas como **Strategy**
+(`tarifa/`). Detalle de arquitectura, patrones usados y evitados,
+refactorizaciones, pruebas y limitaciones en
+[`docs/ae7/01_PROYECTO_FINAL.md`](docs/ae7/01_PROYECTO_FINAL.md); guion de la
+defensa en [`docs/ae7/02_GUION_DEFENSA.md`](docs/ae7/02_GUION_DEFENSA.md).
+
 ## Limitaciones conocidas
-- Un POST con un id que ya existe **reemplaza** la reserva anterior y responde 201 (debería ser 409).
-- Un 400 por validación no indica qué campo falló.
-- `ReservaService.confirmar(id)` no tiene endpoint.
-- El repositorio es en memoria: los datos se pierden al reiniciar.
+- Repositorio en memoria: los datos se pierden al reiniciar.
+- El tipo es texto libre: un tipo desconocido paga tarifa normal.
+- Se puede confirmar una reserva cancelada.
 
 ## Problema conocido del entorno (Windows)
 En el equipo donde se desarrolló, después de `mvn test` algunas carpetas de
@@ -59,6 +68,7 @@ Remove-Item -Recurse -Force target; mvn clean test
 | `docs/05_REFLEXION.md` | Separación de responsabilidades |
 | `docs/02_AUDITORIA_FINAL_PLANTILLA.md` | Checklist de auditoría de la Actividad 3 |
 | `docs/auditoria/` | Evidencias de la auditoría: pruebas, JaCoCo antes/después, Git, capturas |
+| `docs/ae7/` | Ae7: proyecto final, guion de defensa, demo, refactorización antes/después, evidencias |
 
 ---
 
