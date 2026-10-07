@@ -1,6 +1,7 @@
 package edu.uees.reservas.api;
 
 import edu.uees.reservas.domain.Reserva;
+import edu.uees.reservas.service.ReservaDuplicadaException;
 import edu.uees.reservas.service.ReservaNoEncontradaException;
 import edu.uees.reservas.service.ReservaService;
 import org.junit.jupiter.api.Test;
@@ -83,6 +84,19 @@ class ReservaControllerTest {
                         .content("{\"id\":\"\",\"tipo\":\"NORMAL\"}"))
                 .andExpect(status().isBadRequest());
         verify(service, never()).crear(anyString(), anyString());
+    }
+
+    @Test
+    void postConIdDuplicadoResponde409() throws Exception {
+        // Arrange
+        when(service.crear("R-001", "VIP")).thenThrow(new ReservaDuplicadaException("R-001"));
+
+        // Act & Assert
+        mvc.perform(post("/api/reservas")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"id\":\"R-001\",\"tipo\":\"VIP\"}"))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.id").value("R-001"));
     }
 
     @Test

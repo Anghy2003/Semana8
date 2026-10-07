@@ -60,19 +60,22 @@ class ReservaApiIntegracionTest {
     }
 
     @Test
-    void postConIdDuplicadoHoyReemplazaLaReservaAnterior() throws Exception {
-        // Limitacion conocida (docs/04_RETO_BUSQUEDA.md): se caracteriza el
-        // comportamiento actual para que un cambio futuro a 409 sea visible.
+    void postConIdDuplicadoResponde409YConservaLaOriginal() throws Exception {
+        // Ae7: antes se reemplazaba en silencio (esta prueba lo caracterizaba
+        // en la auditoria). Ahora es un cambio funcional deliberado.
 
         // Arrange
         crear("INT-002", "NORMAL");
 
         // Act
-        crear("INT-002", "VIP");
+        mvc.perform(post("/api/reservas")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"id\":\"INT-002\",\"tipo\":\"VIP\"}"))
+                .andExpect(status().isConflict());
 
-        // Assert
+        // Assert: la reserva original no cambio
         mvc.perform(get("/api/reservas/INT-002"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.tipo").value("VIP"));
+                .andExpect(jsonPath("$.tipo").value("NORMAL"));
     }
 }
