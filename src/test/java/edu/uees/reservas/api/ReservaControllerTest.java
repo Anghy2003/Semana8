@@ -1,8 +1,8 @@
 package edu.uees.reservas.api;
 
 import edu.uees.reservas.domain.Reserva;
+import edu.uees.reservas.service.ReservaNoEncontradaException;
 import edu.uees.reservas.service.ReservaService;
-import jakarta.servlet.ServletException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -10,7 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
@@ -27,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Service se reemplaza por un doble. Comprueban que el Controller traduce
  * peticiones y respuestas sin contener reglas de negocio.
  */
-@WebMvcTest(ReservaController.class)
+@WebMvcTest(controllers = {ReservaController.class, ManejadorErrores.class})
 class ReservaControllerTest {
 
     @Autowired
@@ -99,14 +98,13 @@ class ReservaControllerTest {
     }
 
     @Test
-    void getDeUnIdInexistenteHoyNoTieneManejoHttp() {
-        // Comportamiento ACTUAL del proyecto base (reto): la excepcion del
-        // servicio sale del Controller sin traducirse; en la app real termina
-        // en HTTP 500. Esta prueba documenta el problema antes de corregirlo.
-        when(service.buscar("R-999"))
-                .thenThrow(new IllegalArgumentException("Reserva no encontrada"));
+    void getDeUnIdInexistenteResponde404ConMensaje() throws Exception {
+        // Reto: antes terminaba en HTTP 500 (docs/04_RETO_BUSQUEDA.md)
+        when(service.buscar("R-999")).thenThrow(new ReservaNoEncontradaException("R-999"));
 
-        assertThrows(ServletException.class,
-                () -> mvc.perform(get("/api/reservas/R-999")));
+        mvc.perform(get("/api/reservas/R-999"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.error").value("Reserva no encontrada"))
+                .andExpect(jsonPath("$.id").value("R-999"));
     }
 }

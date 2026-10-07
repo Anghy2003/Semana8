@@ -23,7 +23,7 @@ public class ReservaService {
 
     public Reserva buscar(String id) {
         return repository.buscarPorId(id)
-                .orElseThrow(() -> new IllegalArgumentException("Reserva no encontrada"));
+                .orElseThrow(() -> new ReservaNoEncontradaException(id));
     }
 
     public Reserva confirmar(String id) {

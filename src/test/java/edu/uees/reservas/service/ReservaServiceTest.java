@@ -104,11 +104,12 @@ class ReservaServiceTest {
         when(repository.buscarPorId("R-999")).thenReturn(Optional.empty());
 
         // Act
-        IllegalArgumentException ex = assertThrows(
-                IllegalArgumentException.class, () -> service.buscar("R-999"));
+        ReservaNoEncontradaException ex = assertThrows(
+                ReservaNoEncontradaException.class, () -> service.buscar("R-999"));
 
-        // Assert: comportamiento actual del proyecto base
+        // Assert: excepcion propia con el id que se busco
         assertEquals("Reserva no encontrada", ex.getMessage());
+        assertEquals("R-999", ex.getId());
     }
 
     @Test
