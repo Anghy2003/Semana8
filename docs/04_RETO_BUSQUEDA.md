@@ -45,3 +45,28 @@ este comportamiento antes de cambiarlo.
 Así el Service sigue sin saber nada de HTTP (solo dice «no existe») y el
 Controller sigue delgado: la traducción a códigos HTTP vive en un solo lugar
 de la capa web.
+
+## Después de la mejora
+
+Implementada en el commit `feat: responder 404 al buscar una reserva inexistente`
+(`ReservaNoEncontradaException` + `ManejadorErrores`). Con la aplicación
+corriendo (`docs/evidencia/08-curl-reto-despues.txt`):
+
+| Petición | Respuesta |
+|---|---|
+| `GET /api/reservas/R-001` (existe) | **200** `{"id":"R-001","tipo":"NORMAL","estado":"PENDIENTE"}` |
+| `GET /api/reservas/R-999` (no existe) | **404** `{"id":"R-999","error":"Reserva no encontrada"}` |
+
+La prueba de la capa HTTP pasó de documentar el problema
+(`getDeUnIdInexistenteHoyNoTieneManejoHttp`) a exigir la solución
+(`getDeUnIdInexistenteResponde404ConMensaje`).
+
+## Mejoras futuras que no hice
+
+- **Errores de validación sin detalle.** Un POST con `id` vacío responde 400,
+  pero el cuerpo no dice qué campo falló. Se puede agregar al mismo
+  `ManejadorErrores` un handler de `MethodArgumentNotValidException`.
+- **Id duplicado.** Un POST con un id que ya existe reemplaza la reserva
+  anterior en silencio y responde 201. Debería responder 409 Conflict.
+- **Confirmar por HTTP.** `ReservaService.confirmar(id)` existe pero no tiene
+  endpoint.

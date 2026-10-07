@@ -1,0 +1,6 @@
+$ curl -X POST http://localhost:8080/api/reservas -d {"id":"R-001","tipo":"NORMAL"}
+{"id":"R-001","tipo":"NORMAL","estado":"PENDIENTE"}  [HTTP 201]
+$ curl "http://localhost:8080/api/reservas/R-001"
+{"id":"R-001","tipo":"NORMAL","estado":"PENDIENTE"}  [HTTP 200]
+$ curl "http://localhost:8080/api/reservas/R-999"   (reto: inexistente, despues de la mejora)
+{"id":"R-999","error":"Reserva no encontrada"}  [HTTP 404]

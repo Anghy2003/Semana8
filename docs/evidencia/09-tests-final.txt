@@ -1,0 +1,26 @@
+19:16:01.909 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [edu.uees.reservas.api.ReservaControllerTest]: ReservaControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+19:16:02.169 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration edu.uees.reservas.ReservasApplication for test class edu.uees.reservas.api.ReservaControllerTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.5.6)
+
+2026-10-06T19:16:02.791-05:00  INFO 19948 --- [           main] e.u.reservas.api.ReservaControllerTest   : Starting ReservaControllerTest using Java 21.0.10 with PID 19948 (started by Angie in C:\Users\Angie\Documents\UESS\semana8-integracion-api)
+2026-10-06T19:16:02.794-05:00  INFO 19948 --- [           main] e.u.reservas.api.ReservaControllerTest   : No active profile set, falling back to 1 default profile: "default"
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (C:\Users\Angie\.m2\repository\net\bytebuddy\byte-buddy-agent\1.17.7\byte-buddy-agent-1.17.7.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+2026-10-06T19:16:05.274-05:00  INFO 19948 --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-10-06T19:16:05.275-05:00  INFO 19948 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-10-06T19:16:05.279-05:00  INFO 19948 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-10-06T19:16:05.343-05:00  INFO 19948 --- [           main] e.u.reservas.api.ReservaControllerTest   : Started ReservaControllerTest in 3.055 seconds (process running for 4.701)
+2026-10-06T19:16:06.087-05:00  WARN 19948 --- [           main] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<edu.uees.reservas.domain.Reserva> edu.uees.reservas.api.ReservaController.crear(edu.uees.reservas.api.CrearReservaRequest): [Field error in object 'crearReservaRequest' on field 'id': rejected value []; codes [NotBlank.crearReservaRequest.id,NotBlank.id,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [crearReservaRequest.id,id]; arguments []; default message [id]]; default message [must not be blank]] ]
+2026-10-06T19:16:06.125-05:00  WARN 19948 --- [           main] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'horas': Failed to convert value of type 'java.lang.String' to required type 'int'; For input string: "abc"]
