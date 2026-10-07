@@ -1,11 +1,22 @@
 package edu.uees.reservas.service;
 
+import edu.uees.reservas.domain.EstadoReserva;
+import edu.uees.reservas.domain.Reserva;
 import edu.uees.reservas.repository.ReservaRepository;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class ReservaServiceTest {
 
@@ -48,5 +59,70 @@ class ReservaServiceTest {
 
         // Assert
         assertFalse(resultado);
+    }
+
+    // ------------------------------------------- crear, buscar y confirmar
+
+    @Test
+    void crearGuardaUnaReservaPendienteConLosDatosRecibidos() {
+        // Arrange: el repositorio devuelve lo que recibe
+        when(repository.guardar(any())).thenAnswer(inv -> inv.getArgument(0));
+
+        // Act
+        Reserva reserva = service.crear("R-001", "VIP");
+
+        // Assert
+        assertEquals("R-001", reserva.getId());
+        assertEquals("VIP", reserva.getTipo());
+        assertEquals(EstadoReserva.PENDIENTE, reserva.getEstado());
+        verify(repository).guardar(reserva);
+    }
+
+    @Test
+    void crearConIdVacioNoLlegaAlRepositorio() {
+        // Act & Assert: la regla vive en el dominio (Reserva)
+        assertThrows(IllegalArgumentException.class, () -> service.crear(" ", "NORMAL"));
+        verify(repository, never()).guardar(any());
+    }
+
+    @Test
+    void buscarDevuelveLaReservaExistente() {
+        // Arrange
+        Reserva guardada = new Reserva("R-002", "NORMAL");
+        when(repository.buscarPorId("R-002")).thenReturn(Optional.of(guardada));
+
+        // Act
+        Reserva encontrada = service.buscar("R-002");
+
+        // Assert
+        assertSame(guardada, encontrada);
+    }
+
+    @Test
+    void buscarUnIdInexistenteLanzaExcepcion() {
+        // Arrange
+        when(repository.buscarPorId("R-999")).thenReturn(Optional.empty());
+
+        // Act
+        IllegalArgumentException ex = assertThrows(
+                IllegalArgumentException.class, () -> service.buscar("R-999"));
+
+        // Assert: comportamiento actual del proyecto base
+        assertEquals("Reserva no encontrada", ex.getMessage());
+    }
+
+    @Test
+    void confirmarCambiaElEstadoYVuelveAGuardar() {
+        // Arrange
+        Reserva guardada = new Reserva("R-003", "NORMAL");
+        when(repository.buscarPorId("R-003")).thenReturn(Optional.of(guardada));
+        when(repository.guardar(any())).thenAnswer(inv -> inv.getArgument(0));
+
+        // Act
+        Reserva confirmada = service.confirmar("R-003");
+
+        // Assert
+        assertEquals(EstadoReserva.CONFIRMADA, confirmada.getEstado());
+        verify(repository).guardar(guardada);
     }
 }
