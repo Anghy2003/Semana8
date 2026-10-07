@@ -136,6 +136,27 @@ class ReservaControllerTest {
     }
 
     @Test
+    void confirmarDevuelveLaReservaConfirmada() throws Exception {
+        // Arrange
+        Reserva confirmada = new Reserva("R-003", "NORMAL");
+        confirmada.confirmar();
+        when(service.confirmar("R-003")).thenReturn(confirmada);
+
+        // Act & Assert
+        mvc.perform(post("/api/reservas/R-003/confirmar"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.estado").value("CONFIRMADA"));
+    }
+
+    @Test
+    void confirmarUnIdInexistenteResponde404() throws Exception {
+        when(service.confirmar("R-999")).thenThrow(new ReservaNoEncontradaException("R-999"));
+
+        mvc.perform(post("/api/reservas/R-999/confirmar"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     void getDeUnIdInexistenteResponde404ConMensaje() throws Exception {
         // Reto: antes terminaba en HTTP 500 (docs/04_RETO_BUSQUEDA.md)
         when(service.buscar("R-999")).thenThrow(new ReservaNoEncontradaException("R-999"));

@@ -60,6 +60,21 @@ class ReservaApiIntegracionTest {
     }
 
     @Test
+    void unaReservaConfirmadaQuedaConfirmadaAlConsultarla() throws Exception {
+        // Arrange
+        crear("INT-003", "VIP");
+
+        // Act
+        mvc.perform(post("/api/reservas/INT-003/confirmar"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.estado").value("CONFIRMADA"));
+
+        // Assert: el cambio quedo guardado en el repositorio real
+        mvc.perform(get("/api/reservas/INT-003"))
+                .andExpect(jsonPath("$.estado").value("CONFIRMADA"));
+    }
+
+    @Test
     void postConIdDuplicadoResponde409YConservaLaOriginal() throws Exception {
         // Ae7: antes se reemplazaba en silencio (esta prueba lo caracterizaba
         // en la auditoria). Ahora es un cambio funcional deliberado.
