@@ -1,0 +1,112 @@
+package edu.uees.reservas.api;
+
+import edu.uees.reservas.domain.Reserva;
+import edu.uees.reservas.service.ReservaService;
+import jakarta.servlet.ServletException;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.MockMvc;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+/**
+ * Pruebas de la capa HTTP: solo se levanta el Controller (WebMvcTest) y el
+ * Service se reemplaza por un doble. Comprueban que el Controller traduce
+ * peticiones y respuestas sin contener reglas de negocio.
+ */
+@WebMvcTest(ReservaController.class)
+class ReservaControllerTest {
+
+    @Autowired
+    private MockMvc mvc;
+
+    @MockitoBean
+    private ReservaService service;
+
+    @Test
+    void saludRespondeApiActiva() throws Exception {
+        mvc.perform(get("/api/reservas/salud"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("API activa"));
+    }
+
+    @Test
+    void puedeCancelarDelegaEnElServicioYDevuelveSuRespuesta() throws Exception {
+        // Arrange
+        when(service.puedeCancelar(2)).thenReturn(true);
+
+        // Act & Assert
+        mvc.perform(get("/api/reservas/puede-cancelar").param("horas", "2"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("true"));
+        verify(service).puedeCancelar(2);
+    }
+
+    @Test
+    void puedeCancelarConHorasNoNumericasResponde400() throws Exception {
+        mvc.perform(get("/api/reservas/puede-cancelar").param("horas", "abc"))
+                .andExpect(status().isBadRequest());
+        verify(service, never()).puedeCancelar(anyInt());
+    }
+
+    @Test
+    void postValidoCreaLaReservaYResponde201() throws Exception {
+        // Arrange
+        when(service.crear("R-001", "NORMAL")).thenReturn(new Reserva("R-001", "NORMAL"));
+
+        // Act & Assert
+        mvc.perform(post("/api/reservas")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"id\":\"R-001\",\"tipo\":\"NORMAL\"}"))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value("R-001"))
+                .andExpect(jsonPath("$.tipo").value("NORMAL"))
+                .andExpect(jsonPath("$.estado").value("PENDIENTE"));
+    }
+
+    @Test
+    void postConIdVacioResponde400SinLlamarAlServicio() throws Exception {
+        mvc.perform(post("/api/reservas")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"id\":\"\",\"tipo\":\"NORMAL\"}"))
+                .andExpect(status().isBadRequest());
+        verify(service, never()).crear(anyString(), anyString());
+    }
+
+    @Test
+    void getPorIdDevuelveLaReserva() throws Exception {
+        // Arrange
+        when(service.buscar("R-002")).thenReturn(new Reserva("R-002", "VIP"));
+
+        // Act & Assert
+        mvc.perform(get("/api/reservas/R-002"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value("R-002"))
+                .andExpect(jsonPath("$.tipo").value("VIP"));
+    }
+
+    @Test
+    void getDeUnIdInexistenteHoyNoTieneManejoHttp() {
+        // Comportamiento ACTUAL del proyecto base (reto): la excepcion del
+        // servicio sale del Controller sin traducirse; en la app real termina
+        // en HTTP 500. Esta prueba documenta el problema antes de corregirlo.
+        when(service.buscar("R-999"))
+                .thenThrow(new IllegalArgumentException("Reserva no encontrada"));
+
+        assertThrows(ServletException.class,
+                () -> mvc.perform(get("/api/reservas/R-999")));
+    }
+}
