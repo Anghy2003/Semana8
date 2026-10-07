@@ -57,6 +57,13 @@ public class ManejadorErrores {
                         "valor", String.valueOf(ex.getValue())));
     }
 
+    /** Argumento invalido para una regla de negocio, por ejemplo base negativa. */
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Map<String, String>> argumentoInvalido(
+            IllegalArgumentException ex) {
+        return ResponseEntity.badRequest().body(Map.of("error", ex.getMessage()));
+    }
+
     /** JSON mal formado o ausente. */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Map<String, String>> cuerpoIlegible(

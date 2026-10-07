@@ -75,6 +75,17 @@ class ReservaApiIntegracionTest {
     }
 
     @Test
+    void elTotalDeUnEstudianteTieneDiezPorCientoDeDescuento() throws Exception {
+        // Arrange
+        crear("INT-004", "ESTUDIANTE");
+
+        // Act & Assert
+        mvc.perform(get("/api/reservas/INT-004/total").param("base", "40"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.total").value(36.0));
+    }
+
+    @Test
     void postConIdDuplicadoResponde409YConservaLaOriginal() throws Exception {
         // Ae7: antes se reemplazaba en silencio (esta prueba lo caracterizaba
         // en la auditoria). Ahora es un cambio funcional deliberado.

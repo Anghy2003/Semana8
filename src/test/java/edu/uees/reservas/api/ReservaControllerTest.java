@@ -136,6 +136,29 @@ class ReservaControllerTest {
     }
 
     @Test
+    void totalDevuelveBaseYTotalCalculadoPorElServicio() throws Exception {
+        // Arrange
+        when(service.calcularTotal("R-002", 40.0)).thenReturn(34.0);
+
+        // Act & Assert
+        mvc.perform(get("/api/reservas/R-002/total").param("base", "40"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value("R-002"))
+                .andExpect(jsonPath("$.base").value(40.0))
+                .andExpect(jsonPath("$.total").value(34.0));
+    }
+
+    @Test
+    void totalConBaseNegativaResponde400ConMensaje() throws Exception {
+        when(service.calcularTotal("R-002", -1.0))
+                .thenThrow(new IllegalArgumentException("Total base invalido"));
+
+        mvc.perform(get("/api/reservas/R-002/total").param("base", "-1"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("Total base invalido"));
+    }
+
+    @Test
     void confirmarDevuelveLaReservaConfirmada() throws Exception {
         // Arrange
         Reserva confirmada = new Reserva("R-003", "NORMAL");

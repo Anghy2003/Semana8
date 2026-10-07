@@ -39,6 +39,13 @@ public class ReservaController {
         return ResponseEntity.ok(service.buscar(id));
     }
 
+    @GetMapping("/{id}/total")
+    public ResponseEntity<TotalResponse> total(
+            @PathVariable String id, @RequestParam double base) {
+        return ResponseEntity.ok(
+                new TotalResponse(id, base, service.calcularTotal(id, base)));
+    }
+
     @PostMapping("/{id}/confirmar")
     public ResponseEntity<Reserva> confirmar(@PathVariable String id) {
         return ResponseEntity.ok(service.confirmar(id));

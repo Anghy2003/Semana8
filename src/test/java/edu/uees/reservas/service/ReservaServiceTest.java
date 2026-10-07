@@ -127,6 +127,62 @@ class ReservaServiceTest {
         assertEquals("R-999", ex.getId());
     }
 
+    // ------------------------------------------- tarifa por tipo (Semana 7)
+
+    private void existe(String id, String tipo) {
+        when(repository.buscarPorId(id)).thenReturn(Optional.of(new Reserva(id, tipo)));
+    }
+
+    @Test
+    void normalPagaLaTarifaBase() {
+        existe("T-1", "NORMAL");
+        assertEquals(100.0, service.calcularTotal("T-1", 100), 0.001);
+    }
+
+    @Test
+    void vipRecibeQuincePorCientoDeDescuento() {
+        existe("T-2", "VIP");
+        assertEquals(85.0, service.calcularTotal("T-2", 100), 0.001);
+    }
+
+    @Test
+    void estudianteRecibeDiezPorCientoDeDescuento() {
+        existe("T-3", "ESTUDIANTE");
+        assertEquals(90.0, service.calcularTotal("T-3", 100), 0.001);
+    }
+
+    @Test
+    void elTipoNoDistingueMayusculas() {
+        existe("T-4", "vip");
+        existe("T-5", "estudiante");
+        assertEquals(85.0, service.calcularTotal("T-4", 100), 0.001);
+        assertEquals(90.0, service.calcularTotal("T-5", 100), 0.001);
+    }
+
+    @Test
+    void unTipoDesconocidoPagaLaTarifaBase() {
+        existe("T-6", "PREMIUM");
+        assertEquals(100.0, service.calcularTotal("T-6", 100), 0.001);
+    }
+
+    @Test
+    void totalCeroEsValido() {
+        existe("T-7", "VIP");
+        assertEquals(0.0, service.calcularTotal("T-7", 0), 0.001);
+    }
+
+    @Test
+    void totalBaseNegativoEsInvalido() {
+        IllegalArgumentException ex = assertThrows(
+                IllegalArgumentException.class, () -> service.calcularTotal("T-1", -0.01));
+        assertEquals("Total base invalido", ex.getMessage());
+    }
+
+    @Test
+    void totalDeUnaReservaInexistenteLanzaNoEncontrada() {
+        assertThrows(ReservaNoEncontradaException.class, () -> service.calcularTotal("NO", 100));
+    }
+
     @Test
     void confirmarCambiaElEstadoYVuelveAGuardar() {
         // Arrange
