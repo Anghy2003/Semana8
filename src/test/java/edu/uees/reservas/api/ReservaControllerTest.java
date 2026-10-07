@@ -58,7 +58,10 @@ class ReservaControllerTest {
     @Test
     void puedeCancelarConHorasNoNumericasResponde400() throws Exception {
         mvc.perform(get("/api/reservas/puede-cancelar").param("horas", "abc"))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("Parametro invalido"))
+                .andExpect(jsonPath("$.parametro").value("horas"))
+                .andExpect(jsonPath("$.valor").value("abc"));
         verify(service, never()).puedeCancelar(anyInt());
     }
 
@@ -82,7 +85,28 @@ class ReservaControllerTest {
         mvc.perform(post("/api/reservas")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"id\":\"\",\"tipo\":\"NORMAL\"}"))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("Datos invalidos"))
+                .andExpect(jsonPath("$.campos.id").value("El id es obligatorio"));
+        verify(service, never()).crear(anyString(), anyString());
+    }
+
+    @Test
+    void postSinTipoIndicaElCampoQueFalta() throws Exception {
+        mvc.perform(post("/api/reservas")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"id\":\"R-001\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.campos.tipo").value("El tipo es obligatorio"));
+    }
+
+    @Test
+    void postConJsonMalFormadoResponde400() throws Exception {
+        mvc.perform(post("/api/reservas")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{ esto no es json"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("El cuerpo de la peticion no es un JSON valido"));
         verify(service, never()).crear(anyString(), anyString());
     }
 

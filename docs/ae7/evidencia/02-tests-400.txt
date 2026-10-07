@@ -1,0 +1,98 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------------< edu.uees:semana8-proyecto-base >-------------------
+[INFO] Building Semana 8 Proyecto Base 1.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.1:clean (default-clean) @ semana8-proyecto-base ---
+[INFO] 
+[INFO] --- jacoco:0.8.12:prepare-agent (default) @ semana8-proyecto-base ---
+[INFO] argLine set to -javaagent:C:\\Users\\Angie\\.m2\\repository\\org\\jacoco\\org.jacoco.agent\\0.8.12\\org.jacoco.agent-0.8.12-runtime.jar=destfile=C:\\Users\\Angie\\Documents\\UESS\\semana8-integracion-api\\target\\jacoco.exec
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ semana8-proyecto-base ---
+[INFO] skip non existing resourceDirectory C:\Users\Angie\Documents\UESS\semana8-integracion-api\src\main\resources
+[INFO] skip non existing resourceDirectory C:\Users\Angie\Documents\UESS\semana8-integracion-api\src\main\resources
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ semana8-proyecto-base ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 11 source files with javac [debug parameters release 21] to target\classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ semana8-proyecto-base ---
+[INFO] skip non existing resourceDirectory C:\Users\Angie\Documents\UESS\semana8-integracion-api\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ semana8-proyecto-base ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 4 source files with javac [debug parameters release 21] to target\test-classes
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ semana8-proyecto-base ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running edu.uees.reservas.api.ReservaControllerTest
+20:07:06.700 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [edu.uees.reservas.api.ReservaControllerTest]: ReservaControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+20:07:07.146 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration edu.uees.reservas.ReservasApplication for test class edu.uees.reservas.api.ReservaControllerTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.5.6)
+
+2026-10-06T20:07:08.249-05:00  INFO 10792 --- [           main] e.u.reservas.api.ReservaControllerTest   : Starting ReservaControllerTest using Java 21.0.10 with PID 10792 (started by Angie in C:\Users\Angie\Documents\UESS\semana8-integracion-api)
+2026-10-06T20:07:08.264-05:00  INFO 10792 --- [           main] e.u.reservas.api.ReservaControllerTest   : No active profile set, falling back to 1 default profile: "default"
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (C:\Users\Angie\.m2\repository\net\bytebuddy\byte-buddy-agent\1.17.7\byte-buddy-agent-1.17.7.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+2026-10-06T20:07:13.381-05:00  INFO 10792 --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-10-06T20:07:13.382-05:00  INFO 10792 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-10-06T20:07:13.390-05:00  INFO 10792 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 3 ms
+2026-10-06T20:07:13.531-05:00  INFO 10792 --- [           main] e.u.reservas.api.ReservaControllerTest   : Started ReservaControllerTest in 6.213 seconds (process running for 8.895)
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.138 s -- in edu.uees.reservas.api.ReservaControllerTest
+[INFO] Running edu.uees.reservas.domain.ReservaTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.032 s -- in edu.uees.reservas.domain.ReservaTest
+[INFO] Running edu.uees.reservas.ReservaApiIntegracionTest
+2026-10-06T20:07:15.426-05:00  INFO 10792 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [edu.uees.reservas.ReservaApiIntegracionTest]: ReservaApiIntegracionTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-10-06T20:07:15.460-05:00  INFO 10792 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration edu.uees.reservas.ReservasApplication for test class edu.uees.reservas.ReservaApiIntegracionTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.5.6)
+
+2026-10-06T20:07:15.546-05:00  INFO 10792 --- [           main] e.u.reservas.ReservaApiIntegracionTest   : Starting ReservaApiIntegracionTest using Java 21.0.10 with PID 10792 (started by Angie in C:\Users\Angie\Documents\UESS\semana8-integracion-api)
+2026-10-06T20:07:15.546-05:00  INFO 10792 --- [           main] e.u.reservas.ReservaApiIntegracionTest   : No active profile set, falling back to 1 default profile: "default"
+2026-10-06T20:07:16.856-05:00  INFO 10792 --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-10-06T20:07:16.856-05:00  INFO 10792 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-10-06T20:07:16.857-05:00  INFO 10792 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-10-06T20:07:16.879-05:00  INFO 10792 --- [           main] e.u.reservas.ReservaApiIntegracionTest   : Started ReservaApiIntegracionTest in 1.398 seconds (process running for 12.242)
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.530 s -- in edu.uees.reservas.ReservaApiIntegracionTest
+[INFO] Running edu.uees.reservas.service.ReservaServiceTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.353 s -- in edu.uees.reservas.service.ReservaServiceTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 26, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jacoco:0.8.12:report (report) @ semana8-proyecto-base ---
+[INFO] Loading execution data file C:\Users\Angie\Documents\UESS\semana8-integracion-api\target\jacoco.exec
+[INFO] Analyzed bundle 'Semana 8 Proyecto Base' with 10 classes
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  19.666 s
+[INFO] Finished at: 2026-10-06T20:07:18-05:00
+[INFO] ------------------------------------------------------------------------
