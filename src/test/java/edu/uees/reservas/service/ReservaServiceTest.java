@@ -3,8 +3,12 @@ package edu.uees.reservas.service;
 import edu.uees.reservas.domain.EstadoReserva;
 import edu.uees.reservas.domain.Reserva;
 import edu.uees.reservas.repository.ReservaRepository;
+import edu.uees.reservas.tarifa.CalculadoraTarifas;
+import edu.uees.reservas.tarifa.TarifaEstudiante;
+import edu.uees.reservas.tarifa.TarifaVip;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,7 +25,8 @@ import static org.mockito.Mockito.when;
 class ReservaServiceTest {
 
     private final ReservaRepository repository = mock(ReservaRepository.class);
-    private final ReservaService service = new ReservaService(repository);
+    private final ReservaService service = new ReservaService(repository,
+            new CalculadoraTarifas(List.of(new TarifaVip(), new TarifaEstudiante())));
 
     // ------------------------------------------- regla de cancelacion (>= 2)
 
