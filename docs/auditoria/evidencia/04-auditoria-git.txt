@@ -1,0 +1,36 @@
+== git status
+?? docs/auditoria/
+== archivos versionados: 37
+== generados o de IDE versionados:
+(ninguno)
+== posibles secretos:
+(fin secretos)
+== .gitignore:
+target/
+.idea/
+.vscode/
+*.iml
+.DS_Store
+== mensajes de commit genericos:
+(ninguno)
+== menciones claude: 0
+== ramas:
+* audit/calidad-trazabilidad
+  feature/integracion-api
+  main
+  remotes/origin/HEAD -> origin/main
+  remotes/origin/feature/integracion-api
+  remotes/origin/main
+== ramas sin integrar a main:
+== README menciona:
+56
+1:# UEES UCOM0310 — Semana 8 — Proyecto base
+5:## Requisitos
+10:## Ejecutar pruebas
+15:## Ejecutar aplicación
+20:## Endpoint inicial
+23:## Cobertura
+29:## Actividad 2 · Laboratorio de integración Spring Boot
+== pom: nombre
+15:  <artifactId>semana8-proyecto-base</artifactId>
+17:  <name>Semana 8 Proyecto Base</name>

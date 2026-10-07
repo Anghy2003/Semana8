@@ -1,0 +1,11 @@
+# Auditoria funcional - 2026-10-07 00:49
+OK     GET salud                                      esperado 200 -> API activa [HTTP 200]
+OK     GET puede-cancelar horas=2 (limite)            esperado 200 -> true [HTTP 200]
+OK     GET puede-cancelar horas=1                     esperado 200 -> false [HTTP 200]
+OK     GET puede-cancelar horas=abc                   esperado 400 -> {"timestamp":"2026-10-07T00:49:11.667+00:00","status":400,"error":"Bad Request","path":"/api/reservas/puede-cancelar"} [HTTP 400]
+OK     POST crear R-100 NORMAL                        esperado 201 -> {"id":"R-100","tipo":"NORMAL","estado":"PENDIENTE"} [HTTP 201]
+OK     GET R-100 (lo recien creado)                   esperado 200 -> {"id":"R-100","tipo":"NORMAL","estado":"PENDIENTE"} [HTTP 200]
+OK     GET R-404 (inexistente)                        esperado 404 -> {"error":"Reserva no encontrada","id":"R-404"} [HTTP 404]
+OK     POST id vacio                                  esperado 400 -> {"timestamp":"2026-10-07T00:49:12.648+00:00","status":400,"error":"Bad Request","path":"/api/reservas"} [HTTP 400]
+OK     POST id duplicado R-100 como VIP               esperado 201 -> {"id":"R-100","tipo":"VIP","estado":"PENDIENTE"} [HTTP 201]
+OK     GET R-100 tras el duplicado                    esperado 200 -> {"id":"R-100","tipo":"VIP","estado":"PENDIENTE"} [HTTP 200]
